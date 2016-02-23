@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pacemaker</string>
+    <string name="enter_activity_details">Enter Activity Details</string>
 </resources>
