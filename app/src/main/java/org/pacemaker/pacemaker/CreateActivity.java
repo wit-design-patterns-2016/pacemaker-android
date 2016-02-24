@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class CreateActivity extends AppCompatActivity
 {
@@ -15,6 +18,8 @@ public class CreateActivity extends AppCompatActivity
   private TextView     activityType;
   private TextView     activityLocation;
   private NumberPicker distancePicker;
+
+  private List<MyActivity> activities = new ArrayList<MyActivity>();
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -35,7 +40,15 @@ public class CreateActivity extends AppCompatActivity
 
   public void createActivityButtonPressed (View view)
   {
-    int distance = distancePicker.getValue();
+    double distance = distancePicker.getValue();
+    MyActivity activity = new MyActivity (activityType.getText().toString(), activityLocation.getText().toString(), distance);
+
+    activities.add(activity);
     Log.v("Pacemaker", "CreateActivity Button Pressed with " + distance);
+  }
+
+  public void listActivityButtonPressed (View view)
+  {
+    Log.v("Pacemaker", "List Activities Button Pressed");
   }
 }
