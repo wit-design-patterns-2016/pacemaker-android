@@ -27,5 +27,6 @@
         android:text="Create Activity"
         android:id="@+id/createActivityButton"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="createActivityButtonPressed"/>
 </RelativeLayout>
