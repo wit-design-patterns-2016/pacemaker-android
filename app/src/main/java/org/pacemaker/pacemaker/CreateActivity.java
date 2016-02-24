@@ -15,6 +15,9 @@ import java.util.List;
 
 public class CreateActivity extends AppCompatActivity
 {
+
+  private PacemakerApp app;
+
   private Button       createActivityButton;
   private TextView     activityType;
   private TextView     activityLocation;
@@ -27,6 +30,8 @@ public class CreateActivity extends AppCompatActivity
   {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_create);
+
+    app = (PacemakerApp) getApplication();
 
     createActivityButton = (Button)       findViewById(R.id.createActivityButton);
     activityType         = (TextView)     findViewById(R.id.activityType);
@@ -44,17 +49,15 @@ public class CreateActivity extends AppCompatActivity
     double distance = distancePicker.getValue();
     MyActivity activity = new MyActivity (activityType.getText().toString(), activityLocation.getText().toString(), distance);
 
-    activities.add(activity);
+    app.actvities.add(activity);
     Log.v("Pacemaker", "CreateActivity Button Pressed with " + distance);
   }
+
 
   public void listActivityButtonPressed (View view)
   {
     Log.v("Pacemaker", "List Activityies Button Pressed");
     Intent intent = new Intent(this, ActivitiesList.class);
-    Bundle bundle = new Bundle();
-    bundle.putParcelableArrayList("activities", activities);
-    intent.putExtras(bundle);
     startActivity (intent);
   }
 }

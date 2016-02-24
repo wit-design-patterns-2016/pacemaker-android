@@ -10,7 +10,8 @@ import java.util.List;
 
 public class ActivitiesList extends AppCompatActivity
 {
-  private ListView activitiesListView;
+  private PacemakerApp app;
+  private ListView     activitiesListView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -18,17 +19,13 @@ public class ActivitiesList extends AppCompatActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_activities_list);
 
-    Bundle extras = getIntent().getExtras();
-    List<MyActivity> activities  = extras.getParcelableArrayList("activities");
+    app = (PacemakerApp) getApplication();
 
     activitiesListView = (ListView) findViewById(R.id.activitiesListView);
 
-    for (MyActivity activity : activities)
-    {
-      Log.v("Pacemaker", "Activity: " + activity);
-    }
+    List<MyActivity> activities  = app.actvities;
 
-    ArrayAdapter<MyActivity> activitiesAdapter = new ArrayAdapter<MyActivity>(this, android.R.layout.simple_list_item_1, activities);
+    ArrayAdapter <MyActivity>activitiesAdapter = new ArrayAdapter<MyActivity>(this, android.R.layout.simple_list_item_1, activities);
     activitiesListView.setAdapter(activitiesAdapter);
     activitiesAdapter.notifyDataSetChanged();
   }

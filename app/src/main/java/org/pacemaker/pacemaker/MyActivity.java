@@ -1,12 +1,9 @@
 package org.pacemaker.pacemaker;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import static com.google.common.base.Objects.toStringHelper;
 import com.google.common.base.Objects;
 
-public class MyActivity implements Parcelable
+public class MyActivity
 {
   public Long   id;
   public String type;
@@ -55,38 +52,4 @@ public class MyActivity implements Parcelable
   {
     return Objects.hashCode(this.id, this.type, this.location, this.distance);
   }
-
-  public MyActivity(Parcel in)
-  {
-    this.type = in.readString();
-    this.location = in.readString();
-    this.distance = in.readDouble();
-  }
-
-  @Override
-  public int describeContents()
-  {
-    return 0;
-  }
-
-  @Override
-  public void writeToParcel(Parcel dest, int flags)
-  {
-    dest.writeString(type);
-    dest.writeString(location);
-    dest.writeDouble(distance);
-  }
-
-  public static final Parcelable.Creator<MyActivity> CREATOR = new Parcelable.Creator<MyActivity>()
-  {
-    public MyActivity createFromParcel(Parcel in)
-    {
-      return new MyActivity(in);
-    }
-
-    public MyActivity[] newArray(int size)
-    {
-      return new MyActivity[size];
-    }
-  };
 }
