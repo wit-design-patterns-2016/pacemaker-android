@@ -1,5 +1,6 @@
 package org.pacemaker.pacemaker;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +20,7 @@ public class CreateActivity extends AppCompatActivity
   private TextView     activityLocation;
   private NumberPicker distancePicker;
 
-  private List<MyActivity> activities = new ArrayList<MyActivity>();
+  private ArrayList<MyActivity> activities = new ArrayList<MyActivity>();
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -49,6 +50,11 @@ public class CreateActivity extends AppCompatActivity
 
   public void listActivityButtonPressed (View view)
   {
-    Log.v("Pacemaker", "List Activities Button Pressed");
+    Log.v("Pacemaker", "List Activityies Button Pressed");
+    Intent intent = new Intent(this, ActivitiesList.class);
+    Bundle bundle = new Bundle();
+    bundle.putParcelableArrayList("activities", activities);
+    intent.putExtras(bundle);
+    startActivity (intent);
   }
 }
