@@ -6,4 +6,5 @@
     <string name="distanceLabel">Distance</string>
     <string name="create_activity">Create Activity</string>
     <string name="activities">Activities</string>
+    <string name="list_activities">List Activities</string>
 </resources>
