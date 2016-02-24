@@ -24,9 +24,57 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Activity"
+        android:text="@string/create_activity"
         android:id="@+id/createActivityButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="createActivityButtonPressed"/>
+
+    <EditText
+        android:id="@+id/activityType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/createActivityTitle"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/createActivityTitle"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:hint="@string/activityTypeHint" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/activityLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/activityType"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/activityType"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/activityLocationHint" />
+
+    <TextView
+        android:id="@+id/distanceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/distanceLabel"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/activityLocation"
+        android:layout_alignRight="@+id/createActivityButton"
+        android:layout_alignEnd="@+id/createActivityButton"
+        android:layout_above="@+id/createActivityButton"
+        android:layout_alignLeft="@+id/createActivityButton"
+        android:layout_alignStart="@+id/createActivityButton" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker"
+        android:layout_below="@+id/activityLocation"
+        android:layout_toRightOf="@+id/createActivityButton"
+        android:layout_toEndOf="@+id/createActivityButton" />
+
 </RelativeLayout>

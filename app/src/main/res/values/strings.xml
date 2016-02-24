@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Pacemaker</string>
     <string name="enter_activity_details">Enter Activity Details</string>
+    <string name="activityTypeHint">Enter Activity type...</string>
+    <string name="activityLocationHint">Enter Location...</string>
+    <string name="distanceLabel">Distance</string>
+    <string name="create_activity">Create Activity</string>
 </resources>
