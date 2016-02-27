@@ -12,8 +12,34 @@ import org.pacemaker.models.User;
 
 public class PacemakerApp extends Application
 {
-  public List<MyActivity> activities = new ArrayList<MyActivity>();
-  public Map<String, User> users     = new HashMap<String, User>();
+  private List<MyActivity> activities = new ArrayList<MyActivity>();
+  public  Map<String, User> users     = new HashMap<String, User>();
+  private User              loggedInUser;
+
+  public void registerUser(User user)
+  {
+    users.put(user.email, user);
+  }
+
+  public boolean loginUser(String email, String password)
+  {
+    loggedInUser = users.get(email);
+    if (loggedInUser != null && !loggedInUser.password.equals(password))
+    {
+      loggedInUser = null;
+    }
+    return loggedInUser != null;
+  }
+
+  public void createActivity (MyActivity activity)
+  {
+    activities.add(activity);
+  }
+
+  public List<MyActivity> getActivities()
+  {
+    return activities;
+  }
 
   @Override
   public void onCreate()

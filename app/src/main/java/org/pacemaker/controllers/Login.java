@@ -29,11 +29,8 @@ public class Login extends Activity
     TextView email     = (TextView)  findViewById(R.id.loginEmail);
     TextView password  = (TextView)  findViewById(R.id.loginPassword);
 
-    String emailStr    = email.getText().toString();
-    String passwordStr = password.getText().toString();
-
-    User user = app.users.get(emailStr);
-    if (user != null && user.password.equals(passwordStr))
+    boolean loggedIn = app.loginUser(email.getText().toString(), password.getText().toString());
+    if (loggedIn)
     {
       startActivity (new Intent(this, CreateActivity.class));
     }
