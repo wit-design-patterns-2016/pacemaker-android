@@ -32,7 +32,7 @@ public class ActivitiesList extends  android.app.Activity
 
     activitiesListView = (ListView) findViewById(R.id.activitiesListView);
 
-    List<MyActivity> activities  = app.actvities;
+    List<MyActivity> activities  = app.activities;
 
     ActivityAdapter activitiesAdapter = new ActivityAdapter(this,  activities);
     activitiesListView.setAdapter(activitiesAdapter);

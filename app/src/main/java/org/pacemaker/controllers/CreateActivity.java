@@ -49,7 +49,7 @@ public class CreateActivity extends AppCompatActivity
     double distance = distancePicker.getValue();
     MyActivity activity = new MyActivity (activityType.getText().toString(), activityLocation.getText().toString(), distance);
 
-    app.actvities.add(activity);
+    app.activities.add(activity);
     Log.v("Pacemaker", "CreateActivity Button Pressed with " + distance);
   }
 
