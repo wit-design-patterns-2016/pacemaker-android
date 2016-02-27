@@ -1,4 +1,4 @@
-package org.pacemaker.pacemaker;
+package org.pacemaker.controllers;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.pacemaker.R;
+import org.pacemaker.main.PacemakerApp;
+import org.pacemaker.models.MyActivity;
 
 import java.util.List;
 

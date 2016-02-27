@@ -1,10 +1,11 @@
-package org.pacemaker.pacemaker;
+package org.pacemaker.main;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Application;
 import android.util.Log;
+import org.pacemaker.models.MyActivity;
 
 public class PacemakerApp extends Application
 {

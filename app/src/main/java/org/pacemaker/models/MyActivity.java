@@ -1,4 +1,4 @@
-package org.pacemaker.pacemaker;
+package org.pacemaker.models;
 
 import static com.google.common.base.Objects.toStringHelper;
 import com.google.common.base.Objects;
