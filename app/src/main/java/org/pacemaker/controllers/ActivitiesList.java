@@ -63,7 +63,7 @@ class ActivityAdapter extends ArrayAdapter<MyActivity>
     TextView location  = (TextView) view.findViewById(R.id.location);
     TextView distance  = (TextView) view.findViewById(R.id.distance);
 
-    type.setText(activity.type);
+    type.setText(activity.kind);
     location.setText(activity.location);
     distance.setText("" + activity.distance);
     return view;
