@@ -1,5 +1,6 @@
 package org.pacemaker.main;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.pacemaker.models.MyActivity;
 import org.pacemaker.models.User;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,6 +22,11 @@ public class PacemakerApp extends Application implements Response<User>
   private Map<String, List<MyActivity>> activities    = new HashMap<String, List<MyActivity>>();
   private User                          loggedInUser;
   private boolean                       connected     = false;
+
+  public void connectToPacemakerAPI(Context context)
+  {
+    PacemakerAPI.getUsers(context, this, "Retrieving list of users");
+  }
 
   @Override
   public void setResponse(List<User> aList)
@@ -32,9 +39,11 @@ public class PacemakerApp extends Application implements Response<User>
   }
 
   @Override
-  public void setResponse(User anObject)
+  public void setResponse(User user)
   {
     connected = true;
+    users.put(user.email, user);
+    activities.put(user.email, new ArrayList<MyActivity>());
   }
 
   @Override
@@ -45,11 +54,9 @@ public class PacemakerApp extends Application implements Response<User>
     toast.show();
   }
 
-
-  public void registerUser(User user)
+  public void registerUser(Context context, User user)
   {
-    users.put(user.email, user);
-    activities.put(user.email, new ArrayList<MyActivity>());
+    PacemakerAPI.createUser(context, this, "Registering new user", user);
   }
 
   public boolean loginUser(String email, String password)
@@ -67,29 +74,24 @@ public class PacemakerApp extends Application implements Response<User>
     loggedInUser = null;
   }
 
-  public void createActivity (MyActivity activity)
+  public void createActivity (Context context, MyActivity activity, Response<MyActivity> responder)
   {
     if (loggedInUser != null)
     {
-      List<MyActivity> usersActivities = activities.get(loggedInUser.email);
-      activities.put(loggedInUser.email, usersActivities);
-      usersActivities.add(activity);
+      PacemakerAPI.createActivity(context, loggedInUser, responder, "Creating activity...", activity);
     }
   }
 
-  public List<MyActivity> getActivities()
+  public void getActivities(Context context, Response<MyActivity> responder)
   {
-    List<MyActivity> usersActivities = null;
-    if (loggedInUser != null)
-    {
-      usersActivities = activities.get(loggedInUser.email);
-    }
-    return usersActivities;
+    PacemakerAPI.getActivities(context, loggedInUser, responder, "Retrieving Activities...");
   }
 
   @Override
-  public void onCreate() {
+  public void onCreate()
+  {
     super.onCreate();
     Log.v("Pacemaker", "Pacemaker App Started");
   }
 }
+
