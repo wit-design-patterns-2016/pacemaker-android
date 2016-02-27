@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ActivitiesList extends AppCompatActivity
+public class ActivitiesList extends  android.app.Activity
 {
   private PacemakerApp app;
   private ListView     activitiesListView;
@@ -43,7 +43,7 @@ class ActivityAdapter extends ArrayAdapter<MyActivity>
 
   public ActivityAdapter(Context context, List<MyActivity> activities)
   {
-    super(context, android.R.layout.simple_list_item_1, activities);
+    super(context, R.layout.activity_row_layout, activities);
     this.context   = context;
     this.activities = activities;
   }
@@ -53,12 +53,15 @@ class ActivityAdapter extends ArrayAdapter<MyActivity>
   {
     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    View     view     = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-    MyActivity activity = activities.get(position);
-    TextView textView = (TextView) view.findViewById(android.R.id.text1);
+    View     view      = inflater.inflate(R.layout.activity_row_layout, parent, false);
+    MyActivity activity  = activities.get(position);
+    TextView type      = (TextView) view.findViewById(R.id.type);
+    TextView location  = (TextView) view.findViewById(R.id.location);
+    TextView distance  = (TextView) view.findViewById(R.id.distance);
 
-    textView.setText("" + activity);
-
+    type.setText(activity.type);
+    location.setText(activity.location);
+    distance.setText("" + activity.distance);
     return view;
   }
 
