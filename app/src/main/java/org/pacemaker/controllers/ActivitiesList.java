@@ -1,11 +1,12 @@
 package org.pacemaker.controllers;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.pacemaker.R;
-import org.pacemaker.http.Response;
 import org.pacemaker.main.PacemakerApp;
+import org.pacemaker.main.SyncUpdate;
 import org.pacemaker.models.MyActivity;
 
 import android.content.Context;
@@ -22,39 +23,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class ActivitiesList extends  android.app.Activity implements Response <MyActivity> {
-  private PacemakerApp app;
-  private ListView activitiesListView;
-  private ActivityAdapter activitiesAdapter;
+public class ActivitiesList extends  android.app.Activity implements SyncUpdate
+{
+  private PacemakerApp     app;
+  private ListView         activitiesListView;
+  private ActivityAdapter  activitiesAdapter;
   private List<MyActivity> activities = new ArrayList<MyActivity>();
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(Bundle savedInstanceState)
+  {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_activities_list);
 
     app = (PacemakerApp) getApplication();
 
     activitiesListView = (ListView) findViewById(R.id.activitiesListView);
-    activitiesAdapter = new ActivityAdapter(this, activities);
+    activitiesAdapter = new ActivityAdapter(this,  activities);
     activitiesListView.setAdapter(activitiesAdapter);
-
-    app.getActivities(this, this);
-  }
-
-
-  @Override
-  public void setResponse(List<MyActivity> aList) {
-    activitiesAdapter.activities = aList;
+    activitiesAdapter.activities = app.getActivities();
     activitiesAdapter.notifyDataSetChanged();
   }
 
   @Override
-  public void setResponse(MyActivity anObject) {
+  public void userSyncComplete()
+  { }
+
+  @Override
+  public void activitiesSyncComplete()
+  {
+    activitiesAdapter.activities = app.getActivities();
+    activitiesAdapter.notifyDataSetChanged();
   }
 
   @Override
-  public void errorOccurred(Exception e) {
+  public void syncError(Exception e)
+  {
     Toast toast = Toast.makeText(this, "Error Retrieving Activities...", Toast.LENGTH_SHORT);
     toast.show();
   }
@@ -77,11 +81,11 @@ class ActivityAdapter extends ArrayAdapter<MyActivity>
   {
     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    View     view       = inflater.inflate(R.layout.activity_row_layout, parent, false);
-    MyActivity activity = activities.get(position);
-    TextView type       = (TextView) view.findViewById(R.id.type);
-    TextView location   = (TextView) view.findViewById(R.id.location);
-    TextView distance   = (TextView) view.findViewById(R.id.distance);
+    View       view      = inflater.inflate(R.layout.activity_row_layout, parent, false);
+    MyActivity activity  = activities.get(position);
+    TextView   type      = (TextView) view.findViewById(R.id.type);
+    TextView   location  = (TextView) view.findViewById(R.id.location);
+    TextView   distance  = (TextView) view.findViewById(R.id.distance);
 
     type.setText(activity.kind);
     location.setText(activity.location);

@@ -19,7 +19,7 @@ public class Welcome extends Activity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_welcome);
     app = (PacemakerApp) getApplication();
-    app.connectToPacemakerAPI(this);
+    app.syncUsers(this);
   }
 
   public void loginPressed (View view)

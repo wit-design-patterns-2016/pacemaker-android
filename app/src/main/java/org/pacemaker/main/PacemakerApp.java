@@ -1,71 +1,41 @@
 package org.pacemaker.main;
 
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.pacemaker.http.Response;
 import org.pacemaker.models.MyActivity;
 import org.pacemaker.models.User;
-
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-
-public class PacemakerApp extends Application implements Response<User>
+public class PacemakerApp extends Application implements  SyncUpdate
 {
-  private Map<String, User>             users         = new HashMap<String, User>();
-  private Map<String, List<MyActivity>> activities    = new HashMap<String, List<MyActivity>>();
-  private User                          loggedInUser;
-  private boolean                       connected     = false;
+  private User              loggedInUser;
+  private PacemakerMediator mediator = new PacemakerMediator();
 
-  public void connectToPacemakerAPI(Context context)
+  public void syncUsers(Context context)
   {
-    PacemakerAPI.getUsers(context, this, "Retrieving list of users");
+    mediator.syncUsers(context, this);
   }
 
-  @Override
-  public void setResponse(List<User> aList)
+  public void registerUser(User user, Context context)
   {
-    connected = true;
-    for (User user : aList)
-    {
-      users.put(user.email, user);
-    }
+    mediator.registerUser(context, user, this);
   }
 
-  @Override
-  public void setResponse(User user)
+  public List<MyActivity> getActivities()
   {
-    connected = true;
-    users.put(user.email, user);
-    activities.put(user.email, new ArrayList<MyActivity>());
-  }
-
-  @Override
-  public void errorOccurred(Exception e)
-  {
-    connected = false;
-    Toast toast = Toast.makeText(this, "Failed to connect to Pacemaker Service", Toast.LENGTH_SHORT);
-    toast.show();
-  }
-
-  public void registerUser(Context context, User user)
-  {
-    PacemakerAPI.createUser(context, this, "Registering new user", user);
+    return mediator.getActivities(loggedInUser);
   }
 
   public boolean loginUser(String email, String password)
   {
-    loggedInUser = users.get(email);
+    loggedInUser = mediator.getUser(email);
     if (loggedInUser != null && !loggedInUser.password.equals(password))
     {
       loggedInUser = null;
     }
+    mediator.syncActivities(loggedInUser, this);
     return loggedInUser != null;
   }
 
@@ -74,17 +44,33 @@ public class PacemakerApp extends Application implements Response<User>
     loggedInUser = null;
   }
 
-  public void createActivity (Context context, MyActivity activity, Response<MyActivity> responder)
+  public void createActivity (Context context, MyActivity activity, SyncUpdate syncUpdate)
   {
     if (loggedInUser != null)
     {
-      PacemakerAPI.createActivity(context, loggedInUser, responder, "Creating activity...", activity);
+      mediator.createActivity(loggedInUser, activity, syncUpdate);
     }
   }
 
-  public void getActivities(Context context, Response<MyActivity> responder)
+  @Override
+  public void userSyncComplete()
   {
-    PacemakerAPI.getActivities(context, loggedInUser, responder, "Retrieving Activities...");
+    Toast toast = Toast.makeText(this, "Pacemaker Sync Successful", Toast.LENGTH_SHORT);
+    toast.show();
+  }
+
+  @Override
+  public void activitiesSyncComplete()
+  {
+    Toast toast = Toast.makeText(this, "Pacemaker Sync Successful", Toast.LENGTH_SHORT);
+    toast.show();
+  }
+
+  @Override
+  public void syncError(Exception e)
+  {
+    Toast toast = Toast.makeText(this, "Failed to connect to Pacemaker Service", Toast.LENGTH_SHORT);
+    toast.show();
   }
 
   @Override

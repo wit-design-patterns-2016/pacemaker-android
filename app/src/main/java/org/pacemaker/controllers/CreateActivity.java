@@ -1,61 +1,67 @@
 package org.pacemaker.controllers;
 
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 import org.pacemaker.R;
-import org.pacemaker.http.Response;
 import org.pacemaker.main.PacemakerApp;
+import org.pacemaker.main.SyncUpdate;
+import org.pacemaker.models.MyActivity;
 import org.pacemaker.models.MyActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import java.util.List;
+import android.widget.Toast;
 
-public class CreateActivity extends android.app.Activity implements Response<MyActivity> {
-  private PacemakerApp app;
-
-  private Button createActivityButton;
-  private TextView activityType;
-  private TextView activityLocation;
-  private NumberPicker distancePicker;
+public class CreateActivity extends android.app.Activity implements SyncUpdate
+{
+  private PacemakerApp   app;
+  private Button         createActivityButton;
+  private TextView       activityType;
+  private TextView       activityLocation;
+  private NumberPicker   distancePicker;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(Bundle savedInstanceState)
+  {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_create);
 
     app = (PacemakerApp) getApplication();
 
-    createActivityButton = (Button) findViewById(R.id.createActivityButton);
-    activityType = (TextView) findViewById(R.id.activityType);
-    activityLocation = (TextView) findViewById(R.id.activityLocation);
-    distancePicker = (NumberPicker) findViewById(R.id.numberPicker);
+    createActivityButton = (Button)       findViewById(R.id.createActivityButton);
+    activityType         = (TextView)     findViewById(R.id.activityType);
+    activityLocation     = (TextView)     findViewById(R.id.activityLocation);
+    distancePicker       = (NumberPicker) findViewById(R.id.numberPicker);
 
     distancePicker.setMinValue(0);
     distancePicker.setMaxValue(20);
   }
 
-  public void createActivityButtonPressed(View view) {
-    double distance = distancePicker.getValue();
-    MyActivity activity = new MyActivity(activityType.getText().toString(), activityLocation.getText().toString(), distance);
+  public void createActivityButtonPressed (View view)
+  {
+    double distance     = distancePicker.getValue();
+    MyActivity activity = new MyActivity (activityType.getText().toString(), activityLocation.getText().toString(), distance);
 
     app.createActivity(this, activity, this);
   }
 
   @Override
-  public void setResponse(List<MyActivity> aList) {
+  public void userSyncComplete()
+  { }
+
+  @Override
+  public void activitiesSyncComplete()
+  {
+    Toast toast = Toast.makeText(this, "Activity Created", Toast.LENGTH_SHORT);
+    toast.show();
   }
 
   @Override
-  public void setResponse(MyActivity anObject) {
-  }
-
-  @Override
-  public void errorOccurred(Exception e) {
+  public void syncError(Exception e)
+  {
     Toast toast = Toast.makeText(this, "Failed to create Activity", Toast.LENGTH_SHORT);
     toast.show();
   }
