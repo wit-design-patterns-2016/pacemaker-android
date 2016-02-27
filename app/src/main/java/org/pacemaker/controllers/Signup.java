@@ -30,7 +30,7 @@ public class Signup extends Activity
     TextView password  = (TextView)  findViewById(R.id.Password);
 
     User user = new User(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), password.getText().toString());
-    app.registerUser(user);
+    app.registerUser(this, user);
 
     startActivity (new Intent(this, Login.class));
   }

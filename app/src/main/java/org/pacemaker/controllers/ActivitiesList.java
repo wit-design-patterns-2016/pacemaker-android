@@ -1,42 +1,62 @@
 package org.pacemaker.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.pacemaker.R;
+import org.pacemaker.http.Response;
+import org.pacemaker.main.PacemakerApp;
+import org.pacemaker.models.MyActivity;
+
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.pacemaker.R;
-import org.pacemaker.main.PacemakerApp;
-import org.pacemaker.models.MyActivity;
 
-import java.util.List;
-
-public class ActivitiesList extends  android.app.Activity
-{
+public class ActivitiesList extends  android.app.Activity implements Response <MyActivity> {
   private PacemakerApp app;
-  private ListView     activitiesListView;
+  private ListView activitiesListView;
+  private ActivityAdapter activitiesAdapter;
+  private List<MyActivity> activities = new ArrayList<MyActivity>();
 
   @Override
-  protected void onCreate(Bundle savedInstanceState)
-  {
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_activities_list);
 
     app = (PacemakerApp) getApplication();
 
     activitiesListView = (ListView) findViewById(R.id.activitiesListView);
-
-    List<MyActivity> activities  = app.getActivities();
-
-    ActivityAdapter activitiesAdapter = new ActivityAdapter(this,  activities);
+    activitiesAdapter = new ActivityAdapter(this, activities);
     activitiesListView.setAdapter(activitiesAdapter);
+
+    app.getActivities(this, this);
+  }
+
+
+  @Override
+  public void setResponse(List<MyActivity> aList) {
+    activitiesAdapter.activities = aList;
     activitiesAdapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void setResponse(MyActivity anObject) {
+  }
+
+  @Override
+  public void errorOccurred(Exception e) {
+    Toast toast = Toast.makeText(this, "Error Retrieving Activities...", Toast.LENGTH_SHORT);
+    toast.show();
   }
 }
 
@@ -57,11 +77,11 @@ class ActivityAdapter extends ArrayAdapter<MyActivity>
   {
     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    View     view      = inflater.inflate(R.layout.activity_row_layout, parent, false);
-    MyActivity activity  = activities.get(position);
-    TextView type      = (TextView) view.findViewById(R.id.type);
-    TextView location  = (TextView) view.findViewById(R.id.location);
-    TextView distance  = (TextView) view.findViewById(R.id.distance);
+    View     view       = inflater.inflate(R.layout.activity_row_layout, parent, false);
+    MyActivity activity = activities.get(position);
+    TextView type       = (TextView) view.findViewById(R.id.type);
+    TextView location   = (TextView) view.findViewById(R.id.location);
+    TextView distance   = (TextView) view.findViewById(R.id.distance);
 
     type.setText(activity.kind);
     location.setText(activity.location);

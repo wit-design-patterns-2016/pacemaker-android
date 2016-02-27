@@ -19,7 +19,7 @@ public class Welcome extends Activity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_welcome);
     app = (PacemakerApp) getApplication();
-    PacemakerAPI.getUsers(this, app, "Retrieving list of users");
+    app.connectToPacemakerAPI(this);
   }
 
   public void loginPressed (View view)
